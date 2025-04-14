@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// フェードを管理するクラス
 public class FadeManager : MonoBehaviour
 {
     // 静的変数
@@ -24,7 +25,7 @@ public class FadeManager : MonoBehaviour
     {
         if (!isFadeInstance)
         {// 起動時
-            DontDestroyOnLoad(this); // 最初に生成されたオブジェクトは破棄しない
+            DontDestroyOnLoad(this); // オブジェクトをシーンをまたいでもつ
             isFadeInstance = true;   // 生成フラグを立てる
         }
         else

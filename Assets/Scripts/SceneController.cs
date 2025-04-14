@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Threading.Tasks;      // スレッド
 using UnityEngine.SceneManagement; // シーン
 
+// シーンを管理するクラス
 public class SceneController : MonoBehaviour
 {
     // 自動変数
@@ -56,8 +57,9 @@ public class SceneController : MonoBehaviour
     // シーン切替関数
     public async void sceneChange(int sceneIndex)
     {
-        fadeCanvas.GetComponent<FadeManager>().fadeOut(); // フェードアウトフラグを立てる
-        await Task.Delay(200);                            // フェードアウト完了まで待つ
-        SceneManager.LoadScene(sceneIndex);               // シーンを切り替える
+        fadeCanvas.GetComponent<FadeManager>().fadeOut();                     // フェードアウトフラグを立てる
+        float waitTime = fadeCanvas.GetComponent<FadeManager>().fadeSpeed;    // フェードアウトの時間を取得する
+        await Task.Delay((int)(waitTime * 1000f));                            // フェードアウト完了まで待つ
+        SceneManager.LoadScene(sceneIndex);                                   // シーンを切り替える
     }
 }

@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //-------------------------------------------------------------------------------------------
 // ゲーム全体の管理を行うクラス
 //-------------------------------------------------------------------------------------------
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance; // ゲームマネージャーのインスタンスを保持する変数
+    static public GameManager Instance = null;  // ゲームマネージャーのインスタンスを保持する変数
 
     private void Awake()
     {
         if (Instance == null)
         {// 起動時
-            DontDestroyOnLoad(this); // シーンをまたいでもオブジェクトを保持する
+            DontDestroyOnLoad(this.gameObject); // シーンをまたいでもオブジェクトを保持する
             Instance = this;
         }
         else
@@ -25,12 +26,12 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

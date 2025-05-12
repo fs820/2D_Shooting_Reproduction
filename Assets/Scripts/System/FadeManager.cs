@@ -8,27 +8,30 @@ using UnityEngine.UI;
 //-------------------------------------------------------------------------------------------
 public class FadeManager : MonoBehaviour
 {
-    // 静的変数
+    public float fadeTime = 0.0f;  // フェード時間
 
-    [SerializeField] private GameObject FadeCanvasFrefab; // FadeCanvas(フェード用のパネル)のPrefab(インスペクタで編集可能なプライベート変数)
+    [SerializeField] private float alpha = 0.0f;     // 透明度
 
-    // 自動変数
+    private Image FadeImage = null; // Fadeパネルのイメージのコンポーネント
 
     bool isFadeIn = false;  // フェードインフラグ
     bool isFadeOut = false; // フェードアウトフラグ
 
-    // パブリック
-    public float alpha = 0.0f;     // 透明度
-    public float fadeTime = 0.0f;  // フェード時間
-
     private void Awake()
     {
-        Instantiate(FadeCanvasFrefab); // フェード用のパネルを生成する
+        FadeImage = GetComponentInChildren<Image>();            // Canvasな内のFadeパネルのイメージのコンポーネントを取得
     }
 
     // Update is called once per frame
     void Update()
     {
+        // FadeImageのnullチェック
+        if (FadeImage == null)
+        {// FadeImageが破棄されている場合
+            Debug.LogError(FadeImage);
+            return;
+        }
+
         if (isFadeIn)
         {// フェードイン
             alpha -= Time.deltaTime / fadeTime; // オブジェクトの透明度
@@ -39,7 +42,7 @@ public class FadeManager : MonoBehaviour
                 alpha = 0.0f;
             }
 
-            FadeCanvasFrefab.GetComponentInChildren<Image>().color = new Color(0.0f, 0.0f, 0.0f, alpha); // 透明度を適応する
+            FadeImage.color = new Color(FadeImage.color.r, FadeImage.color.g, FadeImage.color.b, alpha); // 透明度を適応する
         }
         else if (isFadeOut)
         {// フェードアウト
@@ -51,21 +54,39 @@ public class FadeManager : MonoBehaviour
                 alpha = 1.0f;
             }
 
-            FadeCanvasFrefab.GetComponentInChildren<Image>().color = new Color(0.0f, 0.0f, 0.0f, alpha); // 透明度を適応する
+            FadeImage.color = new Color(FadeImage.color.r, FadeImage.color.g, FadeImage.color.b, alpha); // 透明度を適応する
         }
     }
 
     // フェードイン開始
-    public void FadeIn()
+    public bool FadeIn()
     {
-        isFadeIn = true;
-        isFadeOut = false;
+        if (!isFadeIn && !isFadeOut)
+        {// フェードが行われていない
+            isFadeIn = true;
+            isFadeOut = false;
+
+            return true;
+        }
+        else
+        {// フェード中
+            return false;
+        }
     }
 
     // フェードアウト開始
-    public void FadeOut()
+    public bool FadeOut()
     {
-        isFadeIn = false;
-        isFadeOut = true;
+        if (!isFadeIn && !isFadeOut)
+        {// フェードが行われていない
+            isFadeIn = false;
+            isFadeOut = true;
+
+            return true;
+        }
+        else
+        {// フェード中
+            return false;
+        }
     }
 }

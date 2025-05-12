@@ -8,16 +8,16 @@ using UnityEngine.SceneManagement; // シーン
 //-------------------------------------------------------------------------------------------
 public class BootstrapLoader : MonoBehaviour
 {
-    [SerializeField] private GameObject gameManagerPrefab; // ゲームマネージャーのPrefab(インスペクタで編集可能なプライベート変数)
+    [SerializeField] private GameObject gameManagerPrefab = null; // ゲームマネージャーのPrefab(インスペクタで編集可能なプライベート変数)
 
     // 初期生成処理
     private void Awake()
     {
         if (GameManager.Instance == null)
-        {
-            Instantiate(gameManagerPrefab);
-        }
+        {// ゲームマネージャーが存在していない
+            Instantiate(gameManagerPrefab); // ゲームマネージャーを生成
 
-        SceneManager.LoadScene(1); // 最初の本編シーンへ遷移
+            SceneManager.LoadScene(1); // 最初の本編シーンへ遷移
+        }
     }
 }
